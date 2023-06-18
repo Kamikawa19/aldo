@@ -1,8 +1,14 @@
 <?php
 
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
+
+if (App::environment('production')) {
+    URL::forceScheme('https');
+}
 
 Route::get('/', 'FrontendController@index')->name('landingpage');
 Route::get('/login', 'LoginController@index')->name('login');
@@ -25,6 +31,7 @@ Route::get('/home', function () {
 
 Route::get('/webmap', 'WebmapController@index')->name('webmap');
 Route::get('/webmap/{id}', 'WebmapController@kecamatan');
+Route::get('/map', 'WebmapController@mapbox');
 
 Route::get('/infographic', 'FrontendController@info')->name('infografis');
 Route::get('/download', 'FrontendController@download')->name('download');

@@ -13,6 +13,7 @@ class WebmapController extends Controller
 {
     protected $id;
     protected $url;
+    private $Webmap;
 
     public function __construct(UrlGenerator $url)
     {
@@ -67,6 +68,8 @@ class WebmapController extends Controller
 
         return view('v_kecamatan', $data);
     }
+
+
 
     public function getDataAttribute($value)
     {

@@ -12,6 +12,10 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class FrontendController extends Controller
 {
+    private $Infographic;
+    private $ContentPage;
+    private $Ipal;
+
     public function __construct()
     {
         $this->Infographic = new Infographic();

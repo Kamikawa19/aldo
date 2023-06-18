@@ -7,6 +7,8 @@ use App\Models\Mapnav;
 
 class MapnavController extends Controller
 {
+    private $Mapnav;
+
     public function __construct()
     {
         $this->Mapnav = new Mapnav();

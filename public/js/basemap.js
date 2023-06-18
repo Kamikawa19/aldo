@@ -67,3 +67,21 @@
  let otopomap = L.tileLayer('//{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
      attribution: '© OpenStreetMap contributors. OpenTopoMap.org'
  });
+
+ // basemap from esri
+ let esriWorldImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+     //attribution esri
+     attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+     //maximum zoom level
+     maxZoom: 18,
+     //subdomains
+     subdomains: ['server', 'services'],
+     //tile size
+     tileSize: 512,
+     //zoom offset
+     zoomOffset: -1,
+     //opacity
+     opacity: 0.5,
+     //zIndex,
+     zIndex: 0
+ });

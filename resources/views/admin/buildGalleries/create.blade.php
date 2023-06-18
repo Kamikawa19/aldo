@@ -27,14 +27,15 @@
         <form method="POST" action="{{ route("admin.builds.gallery.store", $build->id) }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label>{{ trans('cruds.buildGallery.fields.photo') }}</label>
-                <input type="file" multiple name="files[]" placeholder="Photos" accept="image/*" class="d-block w-100 bg-light text-gray-700 border border-light rounded py-3 px-4 leading-tight focus:outline-none">
-            <div class="form-group">
+                <label class="col-form-label">{{ trans('cruds.buildGallery.fields.photo') }}</label>
+                <input type="file"  multiple name="files[]" placeholder="Photos" accept="image/*;capture=camera"  class="d-block w-100 bg-light text-gray-700 border border-light rounded py-3 px-4 leading-tight focus:outline-none">
+
                 <button class="btn btn-danger" type="submit">
                     {{ trans('global.save') }}
                 </button>
             </div>
         </form>
+
     </div>
 </div>
 
@@ -46,7 +47,7 @@
 <script>
     Dropzone.options.photoDropzone = {
     url: '{{ route('admin.build-galleries.storeMedia') }}',
-    maxFilesize: 1, // MB
+    maxFilesize: 5, // MB
     acceptedFiles: '.jpeg,.jpg,.png,.gif',
     maxFiles: 1,
     addRemoveLinks: true,

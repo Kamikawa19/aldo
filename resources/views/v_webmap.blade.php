@@ -29,6 +29,9 @@
     
 
 <div id="map" style="width: 100%; height: 88vh; box-shadow: 0 0 3px rgba(0,0,0,0.5);"></div>
+<div id="sidebar">
+    <h1>leaflet-sidebar</h1>
+</div>
 
   <!-- Modal -->
   <div class="modal fade" id="featureModal" tabindex="-1" aria-labelledby="feature-title" aria-hidden="true">
@@ -85,16 +88,13 @@ $(document).ready(function(){
 
 <script>
   let kecamatan = L.layerGroup();
-
   @foreach ($kecamatan as $data)
       let kecamatan{{ $data->id }} = L.layerGroup();
   @endforeach
-
     @foreach ($kategori as $data)
     let {{ $data->layer }}Layer = L.geoJson(null);
     let {{ $data->layer }} = L.layerGroup();
     @endforeach
-
 </script>
 
 <script>
@@ -108,45 +108,34 @@ $(document).ready(function(){
 //   ipalkomunalSearch = [],
 //   mckumumSearch = [],
 //   septikkomunalSearch = [];
-
 // //untuk menampung array semua layer yang masuk ke POI di pojok kiri
 // let sidebarLayers = [];
-
 $(window).resize(function () {
   sizeLayerControl();
 });
-
 // $(document).on("click", ".feature-row", function (e) {
 //   $(document).off("mouseout", ".feature-row", clearHighlight);
 //   //sidebarClick(parseInt($(this).attr("id"), 10));
 //   sidebarClick($(this).attr("lat"), $(this).attr("lng"));
 // });
-
 if (!("ontouchstart" in window)) {
   $(document).on("mouseover", ".feature-row", function (e) {
       highlight.clearLayers().addLayer(L.circleMarker([$(this).attr("lat"), $(this).attr("lng")], highlightStyle));
   });
 }
-
 $(document).on("mouseout", ".feature-row", clearHighlight);
-
-
 // $("#list-btn").click(function () {
 //   animateSidebar();
 //   return false;
 // });
-
-
 // $("#sidebar-toggle-btn").click(function () {
 //   animateSidebar();
 //   return false;
 // });
-
 // $("#sidebar-hide-btn").click(function () {
 //   animateSidebar();
 //   return false;
 // });
-
 // function animateSidebar() {
 //   $("#sidebar").animate({
 //       width: "toggle"
@@ -154,16 +143,12 @@ $(document).on("mouseout", ".feature-row", clearHighlight);
 //       map.invalidateSize();
 //   });
 // }
-
-
 function sizeLayerControl() {
   $(".leaflet-control-layers").css("max-height", $("#map").height() - 50);
 }
-
 function clearHighlight() {
   highlight.clearLayers();
 }
-
 // //function sidebarClick(id) {
 // function sidebarClick(lat, lng) {
 //     //let layer = markerClusters.getLayer(id);
@@ -176,7 +161,6 @@ function clearHighlight() {
 //         map.invalidateSize();
 //     }
 // // }
-
 // function syncSidebar() {
 //     /* Empty sidebar features */
 //     $("#feature-list tbody").empty();
@@ -188,9 +172,6 @@ function clearHighlight() {
 //             }
 //         }
 //     });
-
-
-
 //     /* Loop through mckkomunal layer and add only features which are in the map bounds */
 //     mckkomunal.eachLayer(function (layer) {
 //         if (map.hasLayer(mckkomunalLayer)) {
@@ -199,7 +180,6 @@ function clearHighlight() {
 //             }
 //         }
 //     });
-
 //     /* Loop through ipalkomunal layer and add only features which are in the map bounds */
 //     ipalkomunal.eachLayer(function (layer) {
 //         if (map.hasLayer(ipalkomunalLayer)) {
@@ -208,7 +188,6 @@ function clearHighlight() {
 //             }
 //         }
 //     });
-
 //     /* Loop through mck umum layer and add only features which are in the map bounds */
 //     mckumum.eachLayer(function (layer) {
 //         if (map.hasLayer(mckumumLayer)) {
@@ -217,7 +196,6 @@ function clearHighlight() {
 //             }
 //         }
 //     });
-
 //     /* Loop through septiktank komunal layer and add only features which are in the map bounds */
 //     septikkomunal.eachLayer(function (layer) {
 //         if (map.hasLayer(septikkomunalLayer)) {
@@ -226,10 +204,6 @@ function clearHighlight() {
 //             }
 //         }
 //     });
-
-
-
-
     // /* Update list.js featureList */
     // featureList = new List("features", {
     //     valueNames: ["feature-name"]
@@ -238,8 +212,6 @@ function clearHighlight() {
     //     order: "asc"
     // });
 // }
-
-
 /* Overlay Layers */
 let highlight = L.geoJson(null);
 let highlightStyle = {
@@ -248,23 +220,17 @@ let highlightStyle = {
   fillOpacity: 0.7,
   radius: 10
 };
-
-
 /*Kerawanan*/
-
 let kerawananColors = {
   "Risiko Sangat Tinggi": "#fc0314",
   "Risiko Tinggi": "#fcf912",
   "Risiko Sedang": "#89fc3d",
   "Risiko Rendah": "#319df5"
 };
-
 // specify popup options 
 let customOptions = {
   'className': 'custom'
 }
-
-
 function kerawananFeature(feature, layer) {
   let contentPopup = layer.feature.properties.KELURAHAN;
   let dataKerawanan = layer.feature.properties.KERAWANAN;
@@ -274,7 +240,6 @@ function kerawananFeature(feature, layer) {
               '<p>' + 'Area ' + dataKerawanan + ' Air Limbah' + '</p>' + '</div>', customOptions);
           layer.openPopup();
       },
-
       mouseover: function (value) {
           let layerKerawanan = value.target;
           layerKerawanan.setStyle({
@@ -283,19 +248,15 @@ function kerawananFeature(feature, layer) {
               fillOpacity: 0.05,
               opacity: 1
           });
-
           if (!L.Browser.ie && !L.Browser.opera) {
               layerKerawanan.bringToFront();
           }
       },
-
       mouseout: function (value) {
           Kerawanan.resetStyle(value.target);
       }
   });
 }
-
-
 let Kerawanan = L.geoJson(null, {
   style: function (feature) {
       return {
@@ -312,13 +273,9 @@ let Kerawanan = L.geoJson(null, {
   },
   onEachFeature: kerawananFeature
 });
-
-
 $.getJSON("{{ asset('data/kerawanan.geojson') }}", function (data) {
   Kerawanan.addData(data);
 });
-
-
 // get color depending on population density value
 function getColor(jiwa) {
   return jiwa > 40000 ? '#800026' :
@@ -327,7 +284,6 @@ function getColor(jiwa) {
       jiwa > 0 ? '#FED976' :
       '#FFEDA0';
 }
-
 function style(feature) {
   return {
       weight: 2,
@@ -338,37 +294,28 @@ function style(feature) {
       fillColor: getColor(feature.properties.KEPADATAN)
   };
 }
-
 function highlightFeature(e) {
   let layer = e.target;
-
   layer.setStyle({
       weight: 5,
       color: '#666',
       dashArray: '',
       fillOpacity: 0.7
   });
-
   if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
       layer.bringToFront();
   }
-
   info.update(layer.feature.properties);
-
 }
-
 let dataKepadatan;
-
 function resetHighlight(e) {
   dataKepadatan.resetStyle(e.target);
   info.update();
   infoChart.update();
 }
-
 function zoomToFeature(e) {
   map.fitBounds(e.target.getBounds());
 }
-
 function onEachFeature(feature, layer) {
   layer.on({
       mouseover: highlightFeature,
@@ -376,16 +323,15 @@ function onEachFeature(feature, layer) {
       click: zoomToFeature
   });
 }
-
 dataKepadatan = L.geoJson(null, {
   name: dataKepadatan,
   style: style,
   onEachFeature: onEachFeature
 });
-
 $.getJSON("{{ asset('data/kepadatan.geojson') }}", function (data) {
   dataKepadatan.addData(data);
 });
+
 
 
 /*DELINIASI KUMUH*/
@@ -410,7 +356,6 @@ let kumuh = L.geoJson(null, {
                   $("#feature-title").html(feature.properties.KATEGORI);
                   $("#feature-info").html(content);
                   $("#featureModal").modal("show");
-
               }
           });
       }
@@ -436,17 +381,13 @@ let kumuh = L.geoJson(null, {
 $.getJSON("{{ asset('data/kumuh.geojson') }}", function (data) {
   kumuh.addData(data);
 });
-
 let normal = L.geoJson(null);
 $.getJSON("", function (data) {
   normal.addData(data);
 });
-
 function zoomToFeature(e) {
   map.fitBounds(e.target.getBounds());
 }
-
-
 let Kelurahan = L.geoJson(null, {
   style: function (feature) {
       return {
@@ -459,7 +400,6 @@ let Kelurahan = L.geoJson(null, {
       };
   },
   
-
   onEachFeature: function (feature, layer) {
       KelurahanSearch.push({
           name: layer.feature.properties.KELURAHAN,
@@ -476,8 +416,6 @@ let Kelurahan = L.geoJson(null, {
                   fillOpacity: 0.05,
                   opacity: 1
               });
-
-
               // if (!L.Browser.ie && !L.Browser.opera) {
               //     layer.bringToFront();
               // }
@@ -485,7 +423,6 @@ let Kelurahan = L.geoJson(null, {
           mouseout: function (e) {
               Kelurahan.resetStyle(e.target);
           },
-
           click: zoomToFeature,
       });
   }
@@ -493,8 +430,6 @@ let Kelurahan = L.geoJson(null, {
 $.getJSON("{{ asset('data/Kelurahan.geojson') }}", function (data) {
   Kelurahan.addData(data);
 });
-
-
 /*Septiktank Individual*/
 let septiktank = L.geoJson(null, {
   style: function (feature) {
@@ -517,7 +452,6 @@ let septiktank = L.geoJson(null, {
                   $("#feature-title").html(feature.properties.JENIS_SARANA);
                   $("#feature-info").html(content);
                   $("#featureModal").modal("show");
-
               }
           });
       }
@@ -542,8 +476,6 @@ let septiktank = L.geoJson(null, {
 $.getJSON("{{ asset('data/septiktank.geojson') }}", function (data) {
   septiktank.addData(data);
 });
-
-
 /*Jaringan Air Limbah */
 let jaringanAirlimbah = L.geoJson(null, {
   style: function (feature) {
@@ -562,7 +494,6 @@ let jaringanAirlimbah = L.geoJson(null, {
                   $("#feature-title").html(feature.properties.GID);
                   $("#feature-info").html(content);
                   $("#featureModal").modal("show");
-
               }
           });
       }
@@ -587,7 +518,6 @@ let jaringanAirlimbah = L.geoJson(null, {
 $.getJSON("{{ asset('data/jaringan_limbah.geojson') }}", function (data) {
   jaringanAirlimbah.addData(data);
 });
-
 /* Single marker cluster layer to hold all clusters */
 let markerClusters = new L.MarkerClusterGroup({
   spiderfyOnMaxZoom: true,
@@ -595,8 +525,6 @@ let markerClusters = new L.MarkerClusterGroup({
   zoomToBoundsOnClick: true,
   disableClusteringAtZoom: 17
 });
-
-
 map = L.map(document.getElementById('map'), {
   zoom: 12,
   center: [-3.314771, 114.6185566],
@@ -605,9 +533,7 @@ map = L.map(document.getElementById('map'), {
   zoomControl: false,
   fullscreenControl: false
 });
-
 let grid = L.grid().addTo(map);
-
 let iconLayersControl = new L.Control.IconLayers(
         [{
             title: 'Greyscale',
@@ -654,13 +580,10 @@ let iconLayersControl = new L.Control.IconLayers(
             position: 'bottomright',
             maxLayersInRow: 4
         });
-
 iconLayersControl.addTo(map);
 iconLayersControl.on('activelayerchange', function(e) {
         console.log('layer switched', e.layer);
   });
-
-
 /* Layer control listeners that allow for a single markerClusters layer */
 map.on("overlayadd", function (e) {
     if (e.layer === mckplusLayer) {
@@ -685,10 +608,8 @@ map.on("overlayadd", function (e) {
     }
     if (e.layer === ipalLayer) {
         map.addLayer(ipal);
-
     }
 });
-
 map.on("overlayremove", function (e) {
     if (e.layer === mckplusLayer) {
         markerClusters.removeLayer(mckplus);
@@ -712,21 +633,16 @@ map.on("overlayremove", function (e) {
     }
     if (e.layer === ipalLayer) {
         map.removeLayer(ipal);
-
     }
 });
-
 // /* Filter sidebar feature list to only show features in current map bounds */
 // map.on("moveend", function (e) {
 //     syncSidebar();
 // });
-
 /* Clear feature highlight when map is clicked */
 map.on("click", function (e) {
   highlight.clearLayers();
 });
-
-
 let onClicked = function (e) {
   map.off('contextmenu', onClicked); //turn off listener for map click
   currentMarker = L.marker(e.latlng, {
@@ -743,89 +659,65 @@ map.on('contextmenu', function () {
   map.removeLayer(currentMarker);
   map.on('contextmenu', onClicked);
 });
-
 if (L.Browser.touch) {
     L.control.touchHover().addTo(map);
 }
-
 L.Path.CLIP_PADDING = 0.12;
-
-
 /*Angka Kepadatan Penduduk*/
 let info = L.control({
     position: "bottomleft"
 });
-
 info.onAdd = function (map) {
     this._div = L.DomUtil.create('divPadat', 'info');
     this.update();
     return this._div;
 };
-
 info.update = function (props) {
     this._div.innerHTML = (props ?
         '<b>' + props.KELURAHAN + '</b><br />' + props.KEPADATAN + ' jiwa / Km<sup>2</sup>' :
         '<h6>Gerakkan Mouse Anda di atas layer</h6>');
 };
-
 // Add and remove info from layers
 map.on('overlayadd', function (eventLayer) {
     if (eventLayer.name === "Kepadatan Penduduk") {
         info.addTo(this);
     }
 });
-
 map.on('overlayremove', function (eventLayer) {
     if (eventLayer.name === "Kepadatan Penduduk") {
         this.removeControl(info);
     }
 });
-
-
 // //Dashboard Kecamatan
 // let infoChart = L.control({
 //     position: "topleft"
 // });
-
 // infoChart.onAdd = function (map) {
 //     this._div = L.DomUtil.create('divKec', 'info');
 //     this.update();
 //     return this._div;
 // };
-
 // infoChart.update = function (kec) {
 //     this._div.innerHTML = (kec ?
 //         '<div id="chartContainer"></div>' + '<b>' + kec.KECAMATAN + '</b>' + '<br>' + 'Tanpa Akses (%) :' + kec.TANPA_AKSES + '<br>' + 'Akses Dasar (%) : ' + kec.AKSES_DASAR + '<br>' + 'Akses Aman (%) : ' + kec.AKSES_AMAN + '<br>' :
 //         '<h6>Gerakkan Mouse di atas layer</h6>');
 // };
-
-
 // // Add and remove info from layers
 // map.on('overlayadd', function (eventLayer) {
 //     if (eventLayer.name === "Kecamatan") {
 //         infoChart.addTo(this);
-
 //     }
 // });
-
 // map.on('overlayremove', function (eventLayer) {
 //     if (eventLayer.name === "Kecamatan") {
 //         this.removeControl(infoChart);
 //     }
 // });
-
-
-
-
 // //Legenda Kecamatan//
-
 // let kecLegend = L.control({
 //     name: 'kecLegend',
 //     position: 'bottomleft'
 // });
-
-
-
 // kecLegend.onAdd = function (map) {
 //     let divKec = L.DomUtil.create("divKec", "info legend");
 //     divKec.innerHTML += "<h5><b>Legenda :</b> Kecamatan</h5>";
@@ -834,10 +726,8 @@ map.on('overlayremove', function (eventLayer) {
 //     divKec.innerHTML += '<i style="background: #a1de93"></i><span>Banjarmasin Tengah</span><br>';
 //     divKec.innerHTML += '<i style="background: #f47c7c"></i><span>Banjarmasin Timur</span><br>';
 //     divKec.innerHTML += '<i style="background: #f7f48b"></i><span>Banjarmasin Utara</span><br>';
-
 //     return divKec;
 // };
-
 // // Add and remove legend from layers
 // map.on('overlayadd', function (eventLayer) {
 //     // Switch to the legend...
@@ -845,28 +735,19 @@ map.on('overlayremove', function (eventLayer) {
 //         kecLegend.addTo(this);
 //         this.removeControl(legend);
 //         this.removeControl(info);
-
-
 //     }
 // });
-
 // map.on('overlayremove', function (eventLayer) {
 //     // Switch to the legend...
 //     if (eventLayer.name === "Kecamatan") {
 //         this.removeControl(kecLegend);
 //     }
 // });
-
-
 //Legenda Kerawanan Air Limbah//
-
 let rawanLegend = L.control({
     name: 'rawanLegend',
     position: 'bottomleft'
 });
-
-
-
 rawanLegend.onAdd = function (map) {
     let div = L.DomUtil.create("div", "info legend");
     div.innerHTML += "<h6><b>Area Risiko Air Limbah</b></h6>";
@@ -874,56 +755,41 @@ rawanLegend.onAdd = function (map) {
     div.innerHTML += '<i style="background: #89fc3d"></i><span>Risiko Sedang</span><br>';
     div.innerHTML += '<i style="background: #fcf912"></i><span>Risiko Tinggi</span><br>';
     div.innerHTML += '<i style="background: #fc0314"></i><span>Risiko Sangat Tinggi</span><br>';
-
     return div;
 };
-
 // Add and remove legend from layers
 map.on('baselayerchange', function (eventLayer) {
     // Switch to the legend...
     if (eventLayer.name === "Risiko Air Limbah Domestik") {
         rawanLegend.addTo(map);
-
     }
 });
-
 // map.on('overlayremove', function (eventLayer) {
 //     // Switch to the legend...
 //     if (eventLayer.name === "Risiko Air Limbah Domestik") {
 //         this.removeControl(rawanLegend);
 //     }
 // });
-
 //Legenda Kepadatan Penduduk//
-
 // let legend = L.control({
 //     position: 'bottomleft'
 // });
-
-
-
 // legend.onAdd = function (map) {
 //     let title = '<h6>Kepadatan Penduduk (jiwa/km<sup>2</sup>) </h6>';
 //     let divPadat = L.DomUtil.create('divPadat', 'info legend'),
 //         grades = [0, 15000, 20000, 40000],
 //         labels = [],
 //         from, to;
-
 //     for (let i = 0; i < grades.length; i++) {
 //         from = grades[i];
 //         to = grades[i + 1];
-
-
 //         labels.push(
 //             '<i style="background:' + getColor(from + 1) + '"></i> ' +
 //             from + (to ? '&ndash;' + to : '+'));
 //     }
-
 //     divPadat.innerHTML = title + [labels.join('<br>')];
 //     return divPadat;
 // };
-
-
 // Add and remove legend from layers
 // map.on('overlayadd', function (eventLayer) {
 //     // Switch to the legend...
@@ -931,27 +797,21 @@ map.on('baselayerchange', function (eventLayer) {
 //         legend.addTo(this);
 //         this.removeControl(kecLegend);
 //         this.removeControl(infoChart);
-
 //     }
 // });
-
 // map.on('overlayremove', function (eventLayer) {
 //     // Switch to the legend...
 //     if (eventLayer.name === "Kepadatan Penduduk") {
 //         this.removeControl(legend);
 //     }
 // });
-
-
 // /* Larger screens get expanded layer control and visible sidebar */
 // if (document.body.clientWidth <= 1367) {
 //     var isCollapsed = true;
 // } else {
 //     var isCollapsed = false;
 // }
-
 /*KECAMATAN*/
-
 @foreach ($kecamatan as $data)
 L.geoJson(<?= $data->geojson ?>, {
   style : function (feature) {
@@ -963,13 +823,9 @@ L.geoJson(<?= $data->geojson ?>, {
     };
 },
 }).addTo(kecamatan{{$data->id }});
-
 @endforeach
-
 /*MCK Plus*/
-
 @foreach ($mckplus as $data)
-
 L.marker([<?= $data->lat . ',' . $data->lng ?>], {
         icon: L.icon({
                 iconUrl: '{{ asset( Storage::url($data->icon) ) }}',
@@ -986,11 +842,8 @@ L.marker([<?= $data->lat . ',' . $data->lng ?>], {
             $('#featureModal').modal('show');
             highlight.clearLayers().addLayer(L.circleMarker(this.getLatLng(), highlightStyle));
           });
-
 @endforeach
-
 /*MCK Komunal*/
-
 @foreach ($mckkomunal as $data)
 L.marker([<?= $data->lat . ',' . $data->lng ?>], {
         icon: L.icon({
@@ -1008,11 +861,8 @@ L.marker([<?= $data->lat . ',' . $data->lng ?>], {
             $('#featureModal').modal('show');
             highlight.clearLayers().addLayer(L.circleMarker(this.getLatLng(), highlightStyle));
           });
-
 @endforeach
-
 /*MCK Umum*/
-
 @foreach ($mckumum as $data)
 L.marker([<?= $data->lat . ',' . $data->lng ?>], {
         icon: L.icon({
@@ -1030,11 +880,8 @@ L.marker([<?= $data->lat . ',' . $data->lng ?>], {
             $('#featureModal').modal('show');
             highlight.clearLayers().addLayer(L.circleMarker(this.getLatLng(), highlightStyle));
           });
-
 @endforeach
-
 /*IPAL Komunal*/
-
 @foreach ($ipalkomunal as $data)
 L.marker([<?= $data->lat . ',' . $data->lng ?>], {
         icon: L.icon({
@@ -1052,11 +899,8 @@ L.marker([<?= $data->lat . ',' . $data->lng ?>], {
             $('#featureModal').modal('show');
             highlight.clearLayers().addLayer(L.circleMarker(this.getLatLng(), highlightStyle));
           });
-
 @endforeach
-
 /*IPAL PERUMDAPALD*/
-
 @foreach ($ipal as $data)
 L.marker([<?= $data->lat . ',' . $data->lng ?>], {
         icon: L.icon({
@@ -1074,11 +918,8 @@ L.marker([<?= $data->lat . ',' . $data->lng ?>], {
             $('#featureModal').modal('show');
             highlight.clearLayers().addLayer(L.circleMarker(this.getLatLng(), highlightStyle));
           });
-
 @endforeach
-
 /*KOTAKU*/
-
 // @foreach ($kotaku as $data)
 // L.marker([<?= $data->lat . ',' . $data->lng ?>], {
 //         icon: L.icon({
@@ -1090,7 +931,6 @@ L.marker([<?= $data->lat . ',' . $data->lng ?>], {
 //             riseOnHover: true
 //         }).bindPopup('{{ $data->type}} KOTAKU').openPopup().addTo(septikkomunal);
 // @endforeach
-
 // /* Empty layer placeholder to add to layer control for listening when to add/remove KOTAKU to markerClusters layer */
 septikkomunal = L.geoJson(null, {
     pointToLayer: function (feature, latlng) {
@@ -1131,8 +971,6 @@ septikkomunal = L.geoJson(null, {
 $.getJSON("{{ asset('data/kotaku.geojson') }}", function (data) {
     septikkomunal.addData(data);
 });
-
-
   let baseTree = {
       label: '<b>{{ trans('cruds.maps.thematic') }}</b>',
       children: [
@@ -1142,7 +980,6 @@ $.getJSON("{{ asset('data/kotaku.geojson') }}", function (data) {
           {label: '&nbsp;{{ trans('cruds.maps.density') }}', layer: dataKepadatan},
       ]
   };  
-
       var hasAllUnSelected = function() {
           return function(ev, domNode, treeNode, map) {
               var anySelected = false;
@@ -1159,7 +996,6 @@ $.getJSON("{{ asset('data/kotaku.geojson') }}", function (data) {
               return !anySelected;
           };
       };
-
       let overlayTree = {
           label: '<b>LAYER</b>',
           children : [
@@ -1187,9 +1023,7 @@ $.getJSON("{{ asset('data/kotaku.geojson') }}", function (data) {
                   ]
               }]
           };
-
       /* ends*/
-
       let ctl = L.control.layers.tree(baseTree,
               {
                   // namedToggle: true,
@@ -1197,31 +1031,21 @@ $.getJSON("{{ asset('data/kotaku.geojson') }}", function (data) {
                   // expandAll: 'Expand all',
                   collapsed: true,
               });
-
       ctl.addTo(map).collapseTree(true).expandSelected(false);
-
       ctl.setOverlayTree(overlayTree,).collapseTree(true).expandSelected(false);
-
-
-
-
-
 /* Highlight search box text on click */
 $("#searchbox").click(function () {
     $(this).select();
 });
-
 /* Prevent hitting enter from refreshing the page */
 $("#searchbox").keypress(function (e) {
     if (e.which == 13) {
         e.preventDefault();
     }
 });
-
 $("#featureModal").on("hidden.bs.modal", function (e) {
     $(document).on("mouseout", ".feature-row", clearHighlight);
 });
-
 /* Typeahead search functionality */
 $(document).one("ajaxStop", function () {
     $("#loading").hide();
@@ -1234,7 +1058,6 @@ $(document).one("ajaxStop", function () {
     // featureList.sort("feature-name", {
     //     order: "asc"
     // });
-
     let KelurahanBH = new Bloodhound({
         name: "Kelurahan",
         datumTokenizer: function (d) {
@@ -1244,7 +1067,6 @@ $(document).one("ajaxStop", function () {
         local: KelurahanSearch,
         limit: 10
     });
-
     // let KecamatanBH = new Bloodhound({
     //     name: "Kecamatan",
     //     datumTokenizer: function (d) {
@@ -1254,7 +1076,6 @@ $(document).one("ajaxStop", function () {
     //     local: KecamatanSearch,
     //     limit: 5
     // });
-
     // let septiktankBH = new Bloodhound({
     //     name: "Septiktank Individual",
     //     datumTokenizer: function (d) {
@@ -1264,7 +1085,6 @@ $(document).one("ajaxStop", function () {
     //     local: septiktankSearch,
     //     limit: 10
     // });
-
     // let mckplusBH = new Bloodhound({
     //     name: "MCK Plus",
     //     datumTokenizer: function (d) {
@@ -1274,7 +1094,6 @@ $(document).one("ajaxStop", function () {
     //     local: mckplusSearch,
     //     limit: 10
     // });
-
     // let mckkomunalBH = new Bloodhound({
     //     name: "MCK Komunal",
     //     datumTokenizer: function (d) {
@@ -1284,7 +1103,6 @@ $(document).one("ajaxStop", function () {
     //     local: mckkomunalSearch,
     //     limit: 10
     // });
-
     // let ipalkomunalBH = new Bloodhound({
     //     name: "IPAL Komunal",
     //     datumTokenizer: function (d) {
@@ -1294,7 +1112,6 @@ $(document).one("ajaxStop", function () {
     //     local: ipalkomunalSearch,
     //     limit: 10
     // });
-
     // let mckumumBH = new Bloodhound({
     //     name: "MCK Umum",
     //     datumTokenizer: function (d) {
@@ -1304,7 +1121,6 @@ $(document).one("ajaxStop", function () {
     //     local: mckumumSearch,
     //     limit: 10
     // });
-
     // let septikkomunalBH = new Bloodhound({
     //     name: "Septiktank Komunal (KOTAKU)",
     //     datumTokenizer: function (d) {
@@ -1314,7 +1130,6 @@ $(document).one("ajaxStop", function () {
     //     local: septikkomunalSearch,
     //     limit: 100
     // });
-
     KelurahanBH.initialize();
 //KecamatanBH.initialize();
     // septiktankBH.initialize();
@@ -1323,7 +1138,6 @@ $(document).one("ajaxStop", function () {
     // ipalkomunalBH.initialize();
     // mckumumBH.initialize();
     // septikkomunalBH.initialize();
-
     /* instantiate the typeahead UI */
     $("#searchbox").typeahead({
         minLength: 3,
@@ -1336,12 +1150,9 @@ $(document).one("ajaxStop", function () {
         source: KelurahanBH.ttAdapter(),
         templates: {header: "<h4 class='typeahead-header'>Kelurahan di Banjarmasin</h4>"}
       }).on("typeahead:selected", function (obj, datum) {
-
         if (datum.source === "Kelurahan") {
             map.fitBounds(datum.bounds);
         }
-
-
     }).on("typeahead:opened", function () {
         $(".navbar-collapse.in").css("max-height", $(document).height() - $(".navbar-header").height());
         $(".navbar-collapse.in").css("height", $(document).height() - $(".navbar-header").height());
@@ -1352,17 +1163,12 @@ $(document).one("ajaxStop", function () {
     $(".twitter-typeahead").css("position", "static");
     $(".twitter-typeahead").css("display", "block");
   });
-
-
  /*Geocoder Searching*/
-
   L.Control.geocoder({
             position: "topleft",
             collapsed: true
         }).addTo(map);
-
 /*Zoom Extends*/
-
   L.easyButton({
     states: [{
             stateName: 'zoom-to-default',        // name the state
@@ -1374,21 +1180,16 @@ $(document).one("ajaxStop", function () {
             }
        }]
 }).addTo(map);
-
   /*Scale Map*/
   let scaleControl = L.control.scale({imperial: false}).addTo(map);
-
   // Scale Factor
   // let scaleFactor = L.control.scalefactor().addTo(map);
-
     /* Mouse Coordinate */
     let mousePosition = L.control.mousePosition().addTo(map);
-
   /*Fullscreen Control*/
   let fullscreenControl = L.control.fullscreen({
       position: "topleft"
   }).addTo(map);
-
   /* GPS enabled geolocation control set to follow the user's location */
   let locateControl = L.control.locate({
       position: "topleft",
@@ -1420,7 +1221,6 @@ $(document).one("ajaxStop", function () {
           timeout: 10000
       }
   }).addTo(map);
-
   /*Leaflet Measure*/
   function writeResults(results) {
   document.getElementById('eventoutput').innerHTML = JSON.stringify(
@@ -1437,7 +1237,6 @@ $(document).one("ajaxStop", function () {
       2
     );
   }
-
     let measureControl = new L.Control.Measure({
         position: 'topleft',
         primaryLengthUnit: 'kilometers',
@@ -1449,7 +1248,6 @@ $(document).one("ajaxStop", function () {
         decPoint: ',',
         thousandsSep: '.'});
     measureControl.addTo(map);
-
 /* Leaflet patch to make layer control scrollable on touch browsers*/
 let container = $(".leaflet-control-layers")[0];
 if (!L.Browser.touch) {
@@ -1460,8 +1258,14 @@ if (!L.Browser.touch) {
   L.DomEvent.disableClickPropagation(container);
 }
 
+var sidebar = L.control.sidebar('sidebar', {
+    position: 'left'
+});
+
+map.addControl(sidebar);
+
+
+
 </script>
 
 @endpush
-
-    
