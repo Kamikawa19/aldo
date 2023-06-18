@@ -2,9 +2,6 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/sialdobj/public_html/
-    deployment:
-  tasks:
-    - export DEPLOYPATH=/home/cpanel_user_name/public_html/
     - /bin/cp -R app $DEPLOYPATH
     - /bin/cp -R bootstrap $DEPLOYPATH
     - /bin/cp -R config $DEPLOYPATH
